@@ -18,6 +18,7 @@ public class Runner {
 		Graph graph2 = graph.neighbourhoodGraph(new int[]{1,2},2);
 		System.out.println(" done.");
 		
+		
 		//System.out.print("Computing PageRank...");
 		//PageRank pagerank = new PageRank(graph);
 		//System.out.println(" done.");
@@ -77,6 +78,7 @@ public class Runner {
 		//for ( String node : hits.getSortedAuthorityNodes().subList(0,Math.min(10,graph.numNodes()))) System.out.println(node + "\t" + hits.getAuthorityScore(node));
 
 		
+		
 		System.out.println("SimRank similarity for 100 random nodes");
 		for ( int i=0; i<100; i++) {
 			int n1 = new Random().nextInt(graph2.numNodes());
@@ -84,6 +86,8 @@ public class Runner {
 			System.out.println( graph2.node(n1) + "\t" + graph2.node(n2) + "\t" + simrank.getSimRankScore(n1,n2));
 		}
 
+		
+		
 		//System.out.println("Graph Clusters");
 		//for ( int i=0; i<graph.numNodes(); i++) System.out.println(graph.node(i) + "\t" + clustering.getCluster(i));
 		

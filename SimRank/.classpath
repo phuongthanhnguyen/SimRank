@@ -12,5 +12,19 @@
 	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/triangles-1.0.jar"/>
 	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/triangrw-1.1.jar"/>
 	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/webgraph-3.0.7.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/httpcore-4.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jcl-over-slf4j-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jena-arq-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jena-core-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jena-iri-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jena-sdb-1.4.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/jena-tdb-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/slf4j-log4j12-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/xercesImpl-2.11.0.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/apache-jena-2.11.1/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
