@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/colt-1.2.0.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/dsiutils-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/fastutil-6.4.4.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/graph_weighted-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/jsap-2.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/law-2.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/triangles-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/triangrw-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/nguyen/JAR/dependencies/webgraph-3.0.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
