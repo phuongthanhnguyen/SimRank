@@ -1,8 +1,10 @@
 package ezgraph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.hp.hpl.jena.query.Query;
@@ -23,21 +25,7 @@ public class BFS {
 	
 	private Node path[];
 	
-	private String endpoint = "http://193.204.59.20:8890/sparql";	
 	
-	private String graphURI = null;
-		
-	private String dbpediaCat; //dbpedia-owl:Film, dbpedia-owl:MusicalArtist, dbpedia-owl:Band.
-		
-	private String PREFIX = 
-			" PREFIX dbpedia: <http://dbpedia.org/resource/> " +
-			" PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> " +
-			" PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+	
-			" PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-			" PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-			" PREFIX foaf: <http://xmlns.com/foaf/0.1/>" + 
-		        " PREFIX dcterms: <http://purl.org/dc/terms/>" +
-			" PREFIX skos: <http://www.w3.org/2004/02/skos/core#>";
 
 	public BFS(String s, String d) {
 		
@@ -48,6 +36,11 @@ public class BFS {
 	}	
 	
 	public Node[] getPath() { return path; }
+	
+	
+	
+	
+	
 	
 	
 	private void shortestPath(Node n1, Node n2) {
@@ -150,7 +143,7 @@ public class BFS {
         while (label != 0) {
             pNow = path[position];
             
-            //Node ca[] = pNow.getCoauthors();
+            Node ca[] = pNow.getCoauthors();
             
             for (i=0; i<ca.length; i++) {
                 pNext = ca[i];
@@ -172,121 +165,16 @@ public class BFS {
     
     
     
+    
+    
 	
 	
-	public Set<Node> runQuery(String currentUri, String predicate) {
 
-		Set<Node> ret = new HashSet<Node>();
-		
-		if (!currentUri.contains("http://dbpedia.org/resource/"))
-			currentUri = "http://dbpedia.org/resource/" + currentUri;
-		
-		Query query;
-		String queryString;
-
-		currentUri = "<" + currentUri + ">";
-				
-		queryString = this.PREFIX +
-				   " SELECT * WHERE {{ " +			   		
-				   " ?subject " + predicate + " " + currentUri + " . " +
-				   " FILTER isIRI(?subject)} UNION {" +				   
-				   	 currentUri + " " + predicate + " ?object . " + 
-				   " FILTER isIRI(?object)}" +
-				   " } ";
-		
-		//System.out.println(queryString);
-		
-		try {
-			
-			query = QueryFactory.create(queryString);
-			
-			ret.addAll(executeQuery(query, queryString));
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		return ret;
-	}
-		
 	
-	private Set<Node> executeQuery(Query query, String p) {
-
-		Set<Node> ret = new HashSet<Node>();
-
-		p = p.replace("<", "");
-		p = p.replace(">", "");
-		QueryExecution qexec = null;
-		try {
-
-			if (graphURI == null)
-				qexec = QueryExecutionFactory.sparqlService(endpoint, query);
-
-			else
-
-				qexec = QueryExecutionFactory.sparqlService(endpoint, query,graphURI);
-
-			ResultSet results = qexec.execSelect();
-
-			QuerySolution qs;
-			RDFNode node;
-			String n;
-
-			while (results.hasNext()) {
-
-				qs = results.next();
-
-				if (qs.get("object") == null) {
-					node = qs.get("subject");
-
-					n = node.toString();
-					n = n.replace("<", "");
-					n = n.replace(">", "");
-
-					// n e' il soggetto n,uri,p sogg,ogg,prop
-
-					// update(n, uri, p);
-
-				} else {
-
-					node = qs.get("object");
-					n = node.toString();
-					n = n.replace("<", "");
-					n = n.replace(">", "");
-
-					// n e' l'oggetto uri,n,p sogg,ogg,prop
-					// update(uri, n, p);
-
-				}
-
-				n = n.replace("http://dbpedia.org/resource/", "");
-				if (!p.contains("type"))
-					ret.add(n);
-				else { // consideriamo solo i type di yago che sono come delle
-						// categorie
-					if (n.contains("yago"))
-						ret.add(n);
-					// else
-					// System.out.println("owl#Thing not added: "+n);
-
-				}
-
-				// if (!this.mapMetadata.containsKey(p))
-				// this.mapMetadata.put(p, new ArrayList());
-				// this.mapMetadata.get(p).add(n);
-
-			}
-
-		} catch (QueryExceptionHTTP e) {
-			
-            System.out.println(endpoint + " is temporarily down");
-            
-		} finally {
-			qexec.close();
-		}
-
-		return ret;
-	}
+	
+	
+	
+	
 	
 
 }
