@@ -54,12 +54,17 @@ public class Node {
     /*
      * Create a new Node object.
      */
+        
     private Node(String name) {
         this.name = name;
         //this.urlpt = urlpt;
         nodeMap.put(name, this);
         coauthorsLoaded = false;
         labelvalid = false;
+    }
+    
+    public String getName(){    	
+    	return this.name;
     }
     
     /*
@@ -123,66 +128,90 @@ public class Node {
         return name;
     }
 
+    private Node neighbours[];
     
-    public ArrayList<String> readProperties(){
-		
-		ArrayList<String> props = new ArrayList<String>();
-		
-		String line="";
-		
+    public ArrayList<String> readProperties(){		
+		ArrayList<String> props = new ArrayList<String>();		
+		String line="";		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("/home/nguyen/Public/Evaluation/propList.txt"));
 						
-			while ((line = reader.readLine()) != null) {
-				
-				props.add(line);			
-				
+			while ((line = reader.readLine()) != null) {				
+				props.add(line);							
 			}
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}						
-			
+		}									
 		return props;		
 	}
-	
-
-	public Node[] getNeighbourNodes(String currentUri, String predicate) {
-
-		Set<Node> ret = new HashSet<Node>();
-		
-		ArrayList<String> properties = readProperties();
-				
-		if (!currentUri.contains("http://dbpedia.org/resource/"))
+	   
+    
+    
+    public Node[] getNeighbourNodes(String currentUri){
+    	
+    	Set<String> list = new HashSet<String>();
+    	
+    	ArrayList<String> properties = readProperties();
+    	    	
+    	if (!currentUri.contains("http://dbpedia.org/resource/"))
 			currentUri = "http://dbpedia.org/resource/" + currentUri;
 		
 		Query query;
 		String queryString;
 
 		currentUri = "<" + currentUri + ">";
+		    	
+    	for(String p : properties){
+    		
+    		queryString = this.PREFIX +
+ 				   " SELECT * WHERE {{ " +			   		
+ 				   " ?subject " + p + " " + currentUri + " . " +
+ 				   " FILTER isIRI(?subject)} UNION {" +				   
+ 				   	 currentUri + " " + p + " ?object . " + 
+ 				   " FILTER isIRI(?object)}" +
+ 				   " } ";
+    		
+    		query = QueryFactory.create(queryString);
+			
+			list.addAll(executeQuery(query));   		
+    	}
+    	    	
+    	for(String n: list){
+    		
+    		plist.add(create(n));
+    		    		
+    	} 	    	
+    	    	
+    	neighbours = new Node[plist.size()];
+        
+    	neighbours = plist.toArray(neighbours);
+            	
+    	return neighbours; 	
+    	
+    }
+    	   
+    
+    
+    
+    /*
+    
+	public Node[] getNeighbourNodes(Query query) {
+
+		Set<String> list = new HashSet<String>();
+		
+		Set<Node> ret = new HashSet<Node>();
 				
-		queryString = this.PREFIX +
-				   " SELECT * WHERE {{ " +			   		
-				   " ?subject " + predicate + " " + currentUri + " . " +
-				   " FILTER isIRI(?subject)} UNION {" +				   
-				   	 currentUri + " " + predicate + " ?object . " + 
-				   " FILTER isIRI(?object)}" +
-				   " } ";
-		
-		//System.out.println(queryString);
-		
 		try {
-			
-			query = QueryFactory.create(queryString);
-						
-			
-			ret.addAll(executeQuery(query, queryString));
+					
+			list.addAll(executeQuery(query));
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+			
 				
 		Node node[] = new Node[ret.size()];
 		
@@ -191,14 +220,18 @@ public class Node {
 		return node;
 	}
     
+    */
+	
+	
+	
+	
+	
 
 	
-	private Set<Node> executeQuery(Query query, String p) {
+	private Set<String> executeQuery(Query query) {
 
-		Set<Node> ret = new HashSet<Node>();
-
-		p = p.replace("<", "");
-		p = p.replace(">", "");
+		Set<String> ret = new HashSet<String>();
+	
 		QueryExecution qexec = null;
 		try {
 
@@ -237,21 +270,22 @@ public class Node {
 					n = n.replace("<", "");
 					n = n.replace(">", "");
 
-					// n e' l'oggetto uri,n,p sogg,ogg,prop
-					// update(uri, n, p);
 
 				}
 
 				n = n.replace("http://dbpedia.org/resource/", "");
+			
+				/*
 				if (!p.contains("type"))
 					ret.add(n);
-				else { // consideriamo solo i type di yago che sono come delle
-						// categorie
+				else { 
+						
 					if (n.contains("yago"))
 						ret.add(n);
 
 				}
-
+				*/
+			
 			}
 
 		} catch (QueryExceptionHTTP e) {
