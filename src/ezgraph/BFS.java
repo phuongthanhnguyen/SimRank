@@ -6,47 +6,48 @@ import java.util.Iterator;
 
 public class BFS {
 	
-	String sourceURI = null;
+	Node sourceNode = null;
 	
-	String destURI = null;
+	Node destNode = null;
 	
 	private Node path[];
+	
+	public BFS(Node sourceNode, Node destNode) {
 		
-
-	public BFS(String s, String d) {
+		this.sourceNode = sourceNode;
 		
-		this.sourceURI = s;
+		this.destNode = destNode;
 		
-		this.destURI = d;	
+		shortestPath();
+		
+		Node.printNodes();
 		
 	}	
 	
 	public Node[] getPath() { return path; }
 	
-	
-	
-	
-	private void shortestPath(Node n1, Node n2) {
+	public void shortestPath() {
 		
 		Collection<Node>  h,
-	    now1 = new HashSet<Node>(),
-	    now2 = new HashSet<Node>(),
-	    next = new HashSet<Node>();
-		int direction, label, n;
-	    
-	    Node.resetAllLabels();
+	     now1 = new HashSet<Node>(),
+	     now2 = new HashSet<Node>(),
+	     next = new HashSet<Node>();
 		
-       if (n1 == null || n2 == null)
+	   int direction, label, n;
+	    
+	   Node.resetAllLabels();
+		
+       if (sourceNode == null || destNode == null)
            return;
-       if (n1 == n2) {
-           n1.setLabel(1);
+       if (sourceNode == destNode) {
+           sourceNode.setLabel(1);
            path = new Node[1];
-           path[0] = n1;
+           path[0] = sourceNode;
            return;
        }
        
-       n1.setLabel( 1); now1.add(n1);
-       n2.setLabel(-1); now2.add(n2);
+       sourceNode.setLabel( 1); now1.add(sourceNode);
+       destNode.setLabel(-1); now2.add(destNode);
        
        while (true) {
            if (now1.isEmpty() || now2.isEmpty())
@@ -57,10 +58,14 @@ public class BFS {
            }
            
            Iterator<Node> nowI = now1.iterator();
+           
            while (nowI.hasNext()) {
                Node pnow = nowI.next();
                label = pnow.getLabel();
                direction = Integer.signum(label);
+               
+               
+               System.out.println("Name: " + pnow.getName());
                
                Node neighbours[] = pnow.getNeighbourNodes(pnow.getName());
                               
@@ -68,6 +73,9 @@ public class BFS {
                               
                for (i=0; i<neighbours.length; i++) {
                    Node px = neighbours[i];
+                   
+                   //System.out.println(px.getName());
+                   
                    if (px.hasLabel()) {
                        if (Integer.signum(px.getLabel())==direction) continue;
                        if (direction < 0) {
@@ -96,8 +104,6 @@ public class BFS {
        }       
    
 	}
-			
-	
 	
     private void tracing(int position) {
     	Node pNow, pNext;
@@ -123,6 +129,14 @@ public class BFS {
                 }
             }
         }
+    }
+    
+    
+    public void EdgeDetection(){
+
+    	
+    	
+    	return;    	
     }
 	
 }
