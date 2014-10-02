@@ -1,5 +1,9 @@
 package ezgraph;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/*
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -15,7 +20,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
-
+*/
 
 public class BFS {
 	
@@ -40,9 +45,6 @@ public class BFS {
 	
 	
 	
-	
-	
-	
 	private void shortestPath(Node n1, Node n2) {
 		
 		Collection<Node>  h,
@@ -50,8 +52,9 @@ public class BFS {
 	    now2 = new HashSet<Node>(),
 	    next = new HashSet<Node>();
 		int direction, label, n;
-	       
-       Node.resetAllLabels();
+	    
+	    Node.resetAllLabels();
+		
        if (n1 == null || n2 == null)
            return;
        if (n1 == n2) {
@@ -78,14 +81,12 @@ public class BFS {
                label = pnow.getLabel();
                direction = Integer.signum(label);
                
+                              
                
                
+               Node neighbours[] = pnow.getNeighbourNodes();
                
-               
-               Node neighbours[] = pnow.getCoauthors();
-               
-               
-               
+                      
                
                
                //resultList_lev1.addAll(runQuery(this.seedURI, p));     
@@ -158,16 +159,6 @@ public class BFS {
             }
         }
     }
-	
-    
-    
-    
-    
-    
-    
-    
-    
-	
 	
 
 	
