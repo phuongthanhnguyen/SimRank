@@ -28,7 +28,7 @@ public class Node {
     private String name;
     //private String urlpt;
 
-    private String endpoint = "http://193.204.59.20:8890/sparql";	
+    private String endpoint = "http://dbpedia.org/sparql";	
 	
 	private String graphURI = null;
 		
@@ -83,7 +83,7 @@ public class Node {
      * Returns the number of Node objects which
      * have been created until now.
      */
-    static public int numberOfPersons() {
+    static public int numberOfNodes() {
         return nodeMap.size();
     }
     
@@ -94,7 +94,27 @@ public class Node {
     static public Node searchNode(String name) {
         return nodeMap.get(name);
     }
- 
+    
+    
+    public static void printNodes(){
+    	
+    	Iterator iterator = nodeMap.entrySet().iterator();
+    	
+    	Map<String, Node> node = new HashMap<String, Node>();
+    	
+    	while (iterator.hasNext()) {
+    	
+    		Map.Entry entry = (Map.Entry) iterator.next();
+    		    		
+    		
+    		System.out.println(entry.getKey());
+    		
+    	}
+    	
+    	return;
+    }
+    
+    
     
     public int getLabel() {
         if (!labelvalid)
@@ -134,7 +154,7 @@ public class Node {
 		ArrayList<String> props = new ArrayList<String>();		
 		String line="";		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("/home/nguyen/Public/Evaluation/propList.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("/home/nguyen/Public/Evaluation/propList4.txt"));
 						
 			while ((line = reader.readLine()) != null) {				
 				props.add(line);							
@@ -147,17 +167,16 @@ public class Node {
 		}									
 		return props;		
 	}
-	   
-    
+	      
     
     public Node[] getNeighbourNodes(String currentUri){
     	
     	Set<String> list = new HashSet<String>();
     	
     	ArrayList<String> properties = readProperties();
-    	    	
-    	if (!currentUri.contains("http://dbpedia.org/resource/"))
-			currentUri = "http://dbpedia.org/resource/" + currentUri;
+    	   	
+    	//if (!currentUri.contains("http://dbpedia.org/resource/"))
+		//	currentUri = "http://dbpedia.org/resource/" + currentUri;
 		
 		Query query;
 		String queryString;
@@ -174,13 +193,15 @@ public class Node {
  				   " FILTER isIRI(?object)}" +
  				   " } ";
     		
+    		//System.out.println(queryString);
+    		    		
     		query = QueryFactory.create(queryString);
 			
 			list.addAll(executeQuery(query));   		
     	}
     	    	
     	for(String n: list){
-    		
+    		//System.out.println(n);
     		plist.add(create(n));
     		    		
     	} 	    	
@@ -189,41 +210,10 @@ public class Node {
         
     	neighbours = plist.toArray(neighbours);
             	
-    	return neighbours; 	
-    	
+    	return neighbours; 	    	
     }
-    	   
-    
-    
-    
-    /*
-    
-	public Node[] getNeighbourNodes(Query query) {
-
-		Set<String> list = new HashSet<String>();
-		
-		Set<Node> ret = new HashSet<Node>();
-				
-		try {
-					
-			list.addAll(executeQuery(query));
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-			
-				
-		Node node[] = new Node[ret.size()];
-		
-		node = ret.toArray(node);
-		
-		return node;
-	}
-    
-    */
-	
-	
-	
+  
+  
 	
 	
 
@@ -259,9 +249,6 @@ public class Node {
 					n = n.replace("<", "");
 					n = n.replace(">", "");
 
-					// n e' il soggetto n,uri,p sogg,ogg,prop
-
-					// update(n, uri, p);
 
 				} else {
 
@@ -269,23 +256,10 @@ public class Node {
 					n = node.toString();
 					n = n.replace("<", "");
 					n = n.replace(">", "");
-
-
 				}
 
-				n = n.replace("http://dbpedia.org/resource/", "");
-			
-				/*
-				if (!p.contains("type"))
-					ret.add(n);
-				else { 
-						
-					if (n.contains("yago"))
-						ret.add(n);
-
-				}
-				*/
-			
+				ret.add(n);
+				
 			}
 
 		} catch (QueryExceptionHTTP e) {
@@ -298,7 +272,6 @@ public class Node {
 
 		return ret;
 	}
-
 
 
 }
