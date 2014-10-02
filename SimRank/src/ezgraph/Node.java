@@ -1,5 +1,9 @@
 package ezgraph;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -118,12 +122,39 @@ public class Node {
     public String toString() {
         return name;
     }
-       
 
-	public Node[] getNeighborhoodNodes(String currentUri, String predicate) {
+    
+    public ArrayList<String> readProperties(){
+		
+		ArrayList<String> props = new ArrayList<String>();
+		
+		String line="";
+		
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("/home/nguyen/Public/Evaluation/propList.txt"));
+						
+			while ((line = reader.readLine()) != null) {
+				
+				props.add(line);			
+				
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}						
+			
+		return props;		
+	}
+	
+
+	public Node[] getNeighbourNodes(String currentUri, String predicate) {
 
 		Set<Node> ret = new HashSet<Node>();
 		
+		ArrayList<String> properties = readProperties();
+				
 		if (!currentUri.contains("http://dbpedia.org/resource/"))
 			currentUri = "http://dbpedia.org/resource/" + currentUri;
 		
@@ -160,7 +191,6 @@ public class Node {
 		return node;
 	}
     
-	
 
 	
 	private Set<Node> executeQuery(Query query, String p) {
