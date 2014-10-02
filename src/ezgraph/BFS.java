@@ -1,26 +1,8 @@
 package ezgraph;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-/*
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
-*/
 
 public class BFS {
 	
@@ -29,8 +11,7 @@ public class BFS {
 	String destURI = null;
 	
 	private Node path[];
-	
-	
+		
 
 	public BFS(String s, String d) {
 		
@@ -81,18 +62,8 @@ public class BFS {
                label = pnow.getLabel();
                direction = Integer.signum(label);
                
+               Node neighbours[] = pnow.getNeighbourNodes(pnow.getName());
                               
-               
-               
-               Node neighbours[] = pnow.getNeighbourNodes();
-               
-                      
-               
-               
-               //resultList_lev1.addAll(runQuery(this.seedURI, p));     
-               
-               
-               
                int i;
                               
                for (i=0; i<neighbours.length; i++) {
@@ -122,16 +93,10 @@ public class BFS {
                }
            }
            now1.clear(); h = now1; now1 = next; next = h;
-       }
-       
-       return;
+       }       
+   
 	}
 			
-	
-	
-	
-	
-    
 	
 	
     private void tracing(int position) {
@@ -144,10 +109,10 @@ public class BFS {
         while (label != 0) {
             pNow = path[position];
             
-            Node ca[] = pNow.getCoauthors();
+            Node neighbours[] = pNow.getNeighbourNodes(pNow.getName());
             
-            for (i=0; i<ca.length; i++) {
-                pNext = ca[i];
+            for (i=0; i<neighbours.length; i++) {
+                pNext = neighbours[i];
                 if (!pNext.hasLabel())
                     continue;
                 if (pNext.getLabel() == label) {
@@ -160,12 +125,4 @@ public class BFS {
         }
     }
 	
-
-	
-	
-	
-	
-	
-	
-
 }
