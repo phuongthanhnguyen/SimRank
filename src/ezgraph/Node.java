@@ -1,8 +1,10 @@
 package ezgraph;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
 
 public class Node {
 	
-   	private static Map<String, Node> nodeMap = new HashMap<String, Node>();
+   	public static Map<String, Node> nodeMap = new HashMap<String, Node>();
 
     private String name;
     //private String urlpt;
@@ -49,7 +51,8 @@ public class Node {
     
     private int label;
     private boolean labelvalid;
-    private boolean coauthorsLoaded;
+     
+    ArrayList<String> properties = null;
     
     /*
      * Create a new Node object.
@@ -57,10 +60,9 @@ public class Node {
         
     private Node(String name) {
         this.name = name;
-        //this.urlpt = urlpt;
-        nodeMap.put(name, this);
-        coauthorsLoaded = false;
+        nodeMap.put(name, this);  
         labelvalid = false;
+        properties = readProperties();
     }
     
     public String getName(){    	
@@ -113,8 +115,7 @@ public class Node {
     	
     	return;
     }
-    
-    
+       
     
     public int getLabel() {
         if (!labelvalid)
@@ -150,7 +151,7 @@ public class Node {
 
     private Node neighbours[];
     
-    public ArrayList<String> readProperties(){		
+    public static ArrayList<String> readProperties(){		
 		ArrayList<String> props = new ArrayList<String>();		
 		String line="";		
 		try {
@@ -171,13 +172,7 @@ public class Node {
     
     public Node[] getNeighbourNodes(String currentUri){
     	
-    	Set<String> list = new HashSet<String>();
-    	
-    	ArrayList<String> properties = readProperties();
-    	   	
-    	//if (!currentUri.contains("http://dbpedia.org/resource/"))
-		//	currentUri = "http://dbpedia.org/resource/" + currentUri;
-		
+    	Set<String> list = new HashSet<String>();    	
 		Query query;
 		String queryString;
 
@@ -192,16 +187,13 @@ public class Node {
  				   	 currentUri + " " + p + " ?object . " + 
  				   " FILTER isIRI(?object)}" +
  				   " } ";
-    		
-    		//System.out.println(queryString);
-    		    		
+   		    		
     		query = QueryFactory.create(queryString);
 			
 			list.addAll(executeQuery(query));   		
     	}
     	    	
     	for(String n: list){
-    		//System.out.println(n);
     		plist.add(create(n));
     		    		
     	} 	    	
@@ -213,12 +205,7 @@ public class Node {
     	return neighbours; 	    	
     }
   
-  
-	
-	
-
-	
-	private Set<String> executeQuery(Query query) {
+  	private Set<String> executeQuery(Query query) {
 
 		Set<String> ret = new HashSet<String>();
 	
@@ -272,6 +259,7 @@ public class Node {
 
 		return ret;
 	}
-
+	
+	
 
 }
