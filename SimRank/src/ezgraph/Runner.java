@@ -10,6 +10,9 @@ public class Runner {
 	        
 	        Node path[] = bfs.getPath();
 	        
+	        
+	        
+	        
 	        int i;
 	        System.out.println("# of Person objects = " + Node.numberOfNodes());
 	        if (path == null) {
@@ -31,8 +34,10 @@ public class Runner {
 	
 	public static void main ( String args[] ) throws Exception {
 		
+		
+	
 		/*
-		String file = "/home/nguyen/Public/Evaluation/example-graph.txt";
+		String file = "/home/nguyen/Public/Evaluation/SimRank_Graph_2.txt";
 		
 		if ( args.length > 0 ) file = args[0];
 					
@@ -46,26 +51,39 @@ public class Runner {
 		System.out.println(" done.");
 		
 		System.out.print("Computing SimRank on a Subgraph...");
-		SimRank simrank = new SimRank(graph2);
+		SimRank simrank = new SimRank(graph);
 		System.out.println(" done.");
 		
 		
+		
 		System.out.println("SimRank similarity for 100 random nodes");
-		for ( int i=0; i<100; i++) {
-			int n1 = new Random().nextInt(graph2.numNodes());
-			int n2 = new Random().nextInt(graph2.numNodes());
-			System.out.println( graph2.node(n1) + "\t" + graph2.node(n2) + "\t" + simrank.getSimRankScore(n1,n2));
+		for ( int i=0; i<400; i++) {
+			int n1 = new Random().nextInt(graph.numNodes());
+			int n2 = new Random().nextInt(graph.numNodes());
+			System.out.println( graph.node(n1) + "\t" + graph.node(n2) + "\t" + simrank.getSimRankScore(n1,n2));
 		}
+		
 		System.out.println("Top 10 Nodes on Subgraph Sorted By PageRank");
 		*/
 		
+				
 		
+		long start = System.currentTimeMillis();
+
 		
 		Node node1, node2;
-        node1 = Node.create("http://dbpedia.org/resource/Janet_Jackson");        
+        node1 = Node.create("http://dbpedia.org/resource/Enrique_Iglesias");        
     	node2 = Node.create("http://dbpedia.org/resource/Jennifer_Lopez");
 	  	    	
-    	path(node1,node2);    	    	
+    	path(node1,node2);
+
+		long stop = System.currentTimeMillis();
+		
+		long duration = stop - start;
+		
+		System.out.println("The execution time is: " + duration/1000);
+		
+    	    	    	
 		
 	}
 
