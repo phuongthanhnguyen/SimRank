@@ -14,7 +14,7 @@ public class Runner {
 	        
 	        
 	        int i;
-	        System.out.println("# of Person objects = " + Node.numberOfNodes());
+	        System.out.println("# of Node objects = " + Node.numberOfNodes());
 	        if (path == null) {
 	            System.out.println("<"+n1+","+n2+"> not connected");
 	            return;
@@ -36,8 +36,8 @@ public class Runner {
 		
 		
 	
-		/*
-		String file = "/home/nguyen/Public/Evaluation/SimRank_Graph_2.txt";
+		
+		String file = "/home/nguyen/Public/Evaluation/SimRank/SimRank_Graph.txt";
 		
 		if ( args.length > 0 ) file = args[0];
 					
@@ -63,17 +63,17 @@ public class Runner {
 			System.out.println( graph.node(n1) + "\t" + graph.node(n2) + "\t" + simrank.getSimRankScore(n1,n2));
 		}
 		
-		System.out.println("Top 10 Nodes on Subgraph Sorted By PageRank");
-		*/
+		
+		//System.out.println("Top 10 Nodes on Subgraph Sorted By PageRank");
+		
 		
 				
-		
+		/*
 		long start = System.currentTimeMillis();
-
 		
 		Node node1, node2;
-        node1 = Node.create("http://dbpedia.org/resource/Enrique_Iglesias");        
-    	node2 = Node.create("http://dbpedia.org/resource/Jennifer_Lopez");
+        node1 = Node.create("http://dbpedia.org/resource/Whitney_Houston");        
+    	node2 = Node.create("http://dbpedia.org/resource/Christina_Aguilera");
 	  	    	
     	path(node1,node2);
 
@@ -82,7 +82,7 @@ public class Runner {
 		long duration = stop - start;
 		
 		System.out.println("The execution time is: " + duration/1000);
-		
+		*/
     	    	    	
 		
 	}
