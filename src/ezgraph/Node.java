@@ -52,7 +52,7 @@ public class Node {
     private int label;
     private boolean labelvalid;
      
-    ArrayList<String> properties = null;
+   //ArrayList<String> properties = readProperties();;
     
     /*
      * Create a new Node object.
@@ -62,7 +62,7 @@ public class Node {
         this.name = name;
         nodeMap.put(name, this);  
         labelvalid = false;
-        properties = readProperties();
+        
     }
     
     public String getName(){    	
@@ -151,26 +151,9 @@ public class Node {
 
     private Node neighbours[];
     
-    public static ArrayList<String> readProperties(){		
-		ArrayList<String> props = new ArrayList<String>();		
-		String line="";		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("/home/nguyen/Public/Evaluation/propList4.txt"));
-						
-			while ((line = reader.readLine()) != null) {				
-				props.add(line);							
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}									
-		return props;		
-	}
-	      
+     
     
-    public Node[] getNeighbourNodes(String currentUri){
+    public Node[] getNeighbourNodes(String currentUri, ArrayList<String> properties){
     	
     	Set<String> list = new HashSet<String>();    	
 		Query query;
@@ -179,6 +162,12 @@ public class Node {
 		currentUri = "<" + currentUri + ">";
 		    	
     	for(String p : properties){
+    		
+    		//queryString = this.PREFIX +
+    		//	   " SELECT (COUNT(*) AS ?frequency ) WHERE { " +			   		
+    		//	   r1 + " ?predicate " + r2 + " } "; 
+    		
+    		
     		
     		queryString = this.PREFIX +
  				   " SELECT * WHERE {{ " +			   		
@@ -190,13 +179,23 @@ public class Node {
    		    		
     		query = QueryFactory.create(queryString);
 			
-			list.addAll(executeQuery(query));   		
+    		    		
+			list.addAll(executeQuery(query));
+		
+			/*construct the graph here*/
+			
+			
     	}
-    	    	
+    	
+    	
+    	
+    	
     	for(String n: list){
     		plist.add(create(n));
     		    		
-    	} 	    	
+    	} 	   
+    	
+    	
     	    	
     	neighbours = new Node[plist.size()];
         
