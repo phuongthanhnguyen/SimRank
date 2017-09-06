@@ -1,4 +1,4 @@
-package ezgraph;
+package org.crossminer.similaritycalculator.SimRank;
 
 public class SynchronizedCounter {
     private int c = -1;

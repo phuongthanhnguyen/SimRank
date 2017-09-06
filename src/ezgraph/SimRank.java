@@ -1,75 +1,102 @@
-package ezgraph;
+package org.crossminer.similaritycalculator.SimRank;
 
-/*
-import es.yrbcn.graph.weighted.*;
-import it.unimi.dsi.webgraph.*;
+
+
 import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
-import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.objects.*;
-*/
 
-import it.unimi.dsi.webgraph.labelling.*;
 
 public class SimRank {
+	
+	private double damping;	
+	private Graph graph;	
+	private int iter;
+	private int numNodes;	
+	
+	//private Map<Integer, Map<Integer,Float>> scores;
+	
+	SparseMatrix scores;
 
-	private SparseMatrix simrank;
-
-	private Graph graph;
-
-	private double DEFAULT_C = 0.6;
-
- 	public SimRank ( Graph graph ) { this(graph, 0.0000000001, 5); }
-
- 	public SimRank ( Graph graph, double threshold, int maxIter ) {
+	public SimRank(Graph graph) {
 		this.graph = graph;
-		simrank = new SparseMatrix(graph.numNodes());
-		SparseMatrix simrank2 = new SparseMatrix(graph.numNodes());
-		for ( int step=0; step < maxIter && maxIter > 0; step++ ) {
-			double maxDelta = Double.MIN_VALUE;
-			for ( int i = 0 ; i < graph.numNodes() ; i++ ) { simrank.set(i,i,1.0); simrank2.set(i,i,1.0); }
-			ezgraph.NodeIterator it1 = graph.nodeIterator();
-			while ( it1.hasNext() ) {
-				int currentVertex1 = it1.nextInt();
-				ezgraph.NodeIterator it2 = graph.nodeIterator();
-				while ( it2.hasNext() ) {
-					int currentVertex2 = it2.nextInt();
-					if ( currentVertex1 == currentVertex2 ) continue;
-					double quantity = 0.0;
-					Integer aux1 = null , aux2 = null;
-					ArcLabelledNodeIterator.LabelledArcIterator anc1 = it1.ancestors();
-					double sum1 = 0.0;
-					while ( (aux1 = anc1.nextInt()) != null && aux1 >= 0 && aux1 < ( graph.numNodes() ) ) sum1 += anc1.label().getFloat();
-					anc1 = it1.ancestors();
-					while ( (aux1 = anc1.nextInt()) != null && aux1 >= 0 && aux1 < ( graph.numNodes() ) ) {
-						double weight1 = anc1.label().getFloat() / sum1;
-						ArcLabelledNodeIterator.LabelledArcIterator anc2 = it2.ancestors();
-						double sum2 = 0.0;
-						while ( (aux2 = anc2.nextInt()) != null && aux2 >= 0 && aux2 < ( graph.numNodes() ) ) sum2 += anc2.label().getFloat();
-						anc2 = it2.ancestors();
-						while ( (aux2 = anc2.nextInt()) != null && aux2 >= 0 && aux2 < ( graph.numNodes() ) ) {
-							double weight2 = anc2.label().getFloat() / sum2;
-							quantity += weight1 * weight2 * simrank.get(aux1,aux2);
-						}
-					}
-					if ( quantity != 0.0 ) {
-						simrank2.set(currentVertex1,currentVertex2, quantity * ( DEFAULT_C / ( 1.0 * it1.indegree() * it2.indegree() )));
-						maxDelta = Math.max(maxDelta, Math.abs( simrank2.get(currentVertex1,currentVertex2) - simrank.get(currentVertex1,currentVertex2) ) );
-					}
-				}
-			}
-			simrank = simrank2.clone();
-			simrank2 = new SparseMatrix(graph.numNodes());
-			if ( maxDelta < threshold && threshold > 0 ) break;
-		} 
- 	}
-
-	public double getSimRankScore ( int node1, int node2 ) { return simrank.get(node1,node2); }
-
-	public double getSimRankScore ( String node1, String node2 ) { 
-		int id1 = graph.node(node1), id2 = graph.node(node2); 
-		return simrank.get(id1,id2); 
+		this.damping = 0.85f;		
+		numNodes = graph.numNodes();		
+		this.scores =  new SparseMatrix(numNodes);	
 	}
 
+	public void setDamping(double damp) {
+		this.damping = damp;
+	}
+
+	public double getDamping() {
+		return this.damping;
+	}
+
+	public void computeSimRank() {
+		this.iter = 4;		
+		computeSimRank(this.iter);
+	}
+
+	public void computeSimRank(int iter) {
+		float score = 0;
+			
+		SparseMatrix newScores = new SparseMatrix(numNodes);
+		
+		while ((iter--) > 0) {			
+			for (int id1 = 0; id1 < numNodes; id1++) {								
+				for (int id2 = 0; id2 < id1; id2++) {			
+					score = simRank(id1,id2);
+					if(score!=0)newScores.put(id1, id2, score);						
+				}
+			}			
+			scores =  new SparseMatrix(numNodes);			
+			for (int i = 0; i < numNodes; i++) {
+				for (int j = 0; j < i; j++){
+					score = newScores.get(i, j);
+					if(score!=0)scores.put(i, j, score);					
+				}						
+			}			
+			newScores = new SparseMatrix(numNodes);
+		}	
+		//System.out.println("Finish computing SimRank");
+	}
+	
+	
+	public float getSimRank(Integer id1, Integer id2){		
+		if(id1.equals(id2))return new Float(1.0);
+		if(id2>id1){
+			Integer id3=id1;
+			id1=id2;
+			id2=id3;
+		}		
+		return scores.get(id1,id2);			
+	}
+	
+	
+	
+	private float simRank(Integer id1, Integer id2) {
+		float score = 0;					
+		int numInLinks1=0,numInLinks2=0;
+		
+		if(id1.equals(id2))return new Float(1.0);
+				
+		Set<Integer> inlinks1 = graph.inLinks(new Integer(id1));		
+		Set<Integer> inlinks2 = graph.inLinks(new Integer(id2));
+		if(inlinks1==null || inlinks2==null) {			
+			return new Float(0);
+		}
+		
+		numInLinks1 = inlinks1.size();
+		numInLinks2 = inlinks2.size();
+	
+		for(int i:inlinks1){												
+			for(int j:inlinks2){
+				score += getSimRank(new Integer (i),new Integer (j));				
+			}	
+		}
+		
+		score = new Float(( damping / ( numInLinks1 * numInLinks2 ) ) * score );
+		//score = new Float(( damping / ( Math.sqrt(numInLinks1 * numInLinks2) ) ) * score );
+
+		return score;
+	}
 }

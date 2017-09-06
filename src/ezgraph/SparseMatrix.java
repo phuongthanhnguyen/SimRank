@@ -1,57 +1,83 @@
-package ezgraph;
+package org.crossminer.similaritycalculator.SimRank;
 
-import es.yrbcn.graph.weighted.*;
-import it.unimi.dsi.webgraph.*;
-import it.unimi.dsi.webgraph.labelling.*;
-import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
+
+/*************************************************************************
+ *  Compilation:  javac SparseMatrix.java
+ *  Execution:    java SparseMatrix
+ *  
+ *  A sparse, square matrix, implementing using two arrays of sparse
+ *  vectors, one representation for the rows and one for the columns.
+ *
+ *  For matrix-matrix product, we might also want to store the
+ *  column representation.
+ *
+ *************************************************************************/
 
 public class SparseMatrix {
+    private final int N;           // N-by-N matrix
+    private SparseVector[] rows;   // the rows, each row is a sparse vector
 
-      private static final long serialVersionUID = -2396174756253967431L;
+    // initialize an N-by-N matrix of all 0s
+    public SparseMatrix(int N) {
+        this.N  = N;
+        rows = new SparseVector[N];
+        for (int i = 0; i < N; i++) rows[i] = new SparseVector(N);
+    }
 
-      private final List<Int2FloatMap> data;
-  
-      public SparseMatrix clone ( ) { 
-	SparseMatrix aux = new SparseMatrix();
-	for ( Int2FloatMap map : data ) { 
-		Int2FloatMap map2 = new Int2FloatOpenHashMap(map);
-		aux.data.add(map2);
-	}
-	return aux;
-      }
+    // put A[i][j] = value
+    public void put(int i, int j, float value) {
+        if (i < 0 || i >= N) throw new RuntimeException("Illegal index");
+        if (j < 0 || j >= N) throw new RuntimeException("Illegal index");
+        rows[i].put(j, value);
+    }
 
-      public SparseMatrix() { data = new ObjectArrayList<Int2FloatMap>(); }
- 
-      public SparseMatrix (int nrows) {
-          data = new ObjectArrayList<Int2FloatMap>(nrows);
-          for (int i = 0; i < nrows; i++) {
-              Int2FloatMap m = new Int2FloatOpenHashMap();
-              m.defaultReturnValue((float)0.0);
-              data.add(m);
-          }
-      }
+    // return A[i][j]
+    public float get(int i, int j) {
+        if (i < 0 || i >= N) throw new RuntimeException("Illegal index");
+        if (j < 0 || j >= N) throw new RuntimeException("Illegal index");
+        return rows[i].get(j);
+    }
+
+    // return the number of nonzero entries (not the most efficient implementation)
+    public int nnz() { 
+        int sum = 0;
+        for (int i = 0; i < N; i++)
+            sum += rows[i].nnz();
+        return sum;
+    }
+
+    // return the matrix-vector product b = Ax
+    public SparseVector times(SparseVector x) {
+        SparseMatrix A = this;
+        if (N != x.size()) throw new RuntimeException("Dimensions disagree");
+        SparseVector b = new SparseVector(N);
+        for (int i = 0; i < N; i++)
+            b.put(i, A.rows[i].dot(x));
+        return b;
+    }
+
+    // return C = A + B
+    public SparseMatrix plus(SparseMatrix B) {
+        SparseMatrix A = this;
+        if (A.N != B.N) throw new RuntimeException("Dimensions disagree");
+        SparseMatrix C = new SparseMatrix(N);
+        for (int i = 0; i < N; i++)
+            C.rows[i] = A.rows[i].plus(B.rows[i]);
+        return C;
+    }
+
+
+    // return a string representation
+    public String toString() {
+        String s = "N = " + N + ", nonzeros = " + nnz() + "\n";
+        for (int i = 0; i < N; i++) {
+            s += i + ": " + rows[i] + "\n";
+        }
+        return s;
+    }
+
+
+    // test client
   
-      public void set(int row, int col, double value) {
-          while (row >= data.size()) {
-              Int2FloatMap m = new Int2FloatOpenHashMap();
-              m.defaultReturnValue((float)0.0);
-              data.add(m);
-          }
-          data.get(row).put(col, (float)value);
-      }
-  
-      public double get(int row, int col) {
-          if (row >= data.size()) return 0.0;
-          else return data.get(row).get(col);
-      }
-  
-      public Int2FloatMap row(int row) {
-          if (row >= data.size()) return Int2FloatMaps.EMPTY_MAP;
-          else return Int2FloatMaps.unmodifiable(data.get(row));
-      }
 
 }
