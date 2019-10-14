@@ -11,18 +11,25 @@ SimRank is an algorthim used to compute the similarity among nodes in a graph. T
 
 We exploited sparse matrix to optimize the memory usage and thus increasing the computational performance.
 
+There is already an example embedded so that you can test the implementation. We represented a graph for GitHub repositories using various information as it can be seen in the following figure.
+
+<p align="center">
+<img src="https://github.com/phuongthanhnguyen/SimRank/blob/master/Data/Graph.png" width="450">
+</p> 
+
 
 ## Repository Structure
 
 This repository is organized as follows:
 
-* The [src](./src) directory contains the implementation of the SimRank tool
-	
+* The [src](./src) directory contains the implementation of the SimRank tool	
 * The [Data](./Data) directory contains the dataset exploited to test the algorithm:
+	* [Dictionary.txt](./Data/Dictionary.txt): The file contains a list of nodes together with their corresponding ID.
+	* [Graph.txt](./Data/Graph.txt): It stores the graph in the the form of node1#node2
 	
 
 ## How to cite
-If you find our work useful for your research, please cite it using the following BibTex entries:
+If you find the tool useful for your work, please cite it using the following BibTex entries:
 
 ```
 @INPROCEEDINGS{8498236, 
