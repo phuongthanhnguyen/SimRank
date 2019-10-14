@@ -22,7 +22,7 @@ This repository is organized as follows:
 	
 
 ## How to cite
-If you find our work useful for your research, please cite the paper using the following BibTex entries:
+If you find our work useful for your research, please cite it using the following BibTex entries:
 
 ```
 @INPROCEEDINGS{8498236, 
