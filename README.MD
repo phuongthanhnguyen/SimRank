@@ -1,11 +1,15 @@
 
-# FOCUS
+# SimRank
 
-This repository contains the source code implementation of SimRank and a dataset for testing the algorithm:
+This repository contains the source code implementation of SimRank and a dataset for testing the algorithm.
 
 
 ## Introduction
 
+
+SimRank is an algorthim used to compute the similarity among nodes in a graph. The original SimRank paper is in the following ([link](http://ilpubs.stanford.edu:8090/508/1/2001-41.pdf)).
+
+We exploited sparse matrix to optimize the memory usage and thus increasing the computational performance.
 
 
 ## Repository Structure
