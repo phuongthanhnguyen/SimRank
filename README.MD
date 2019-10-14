@@ -13,9 +13,7 @@ This repository contains the source code implementation of SimRank and a dataset
 This repository is organized as follows:
 
 * The [src](./src) directory contains the implementation of the SimRank tool
-	* [Focus](./tools/Focus): The Java implementation of FOCUS
-	* [FocusRascal](./tools/FocusRascal): A set of tools written in [Rascal](https://www.rascal-mpl.org/) that are used to (i) transform raw Java source and binary code into FOCUS-processable and PAM-processable data (ii) retrieve concrete Java usage patterns
-	* [PAM](./tools/PAM): A set of Python scripts allowing to compare our approach to PAM
+	
 * The [Data](./Data) directory contains the dataset exploited to test the algorithm:
 	
 
@@ -40,7 +38,7 @@ month={Aug},}
 
 or this one
 
-
+```
 @inproceedings{Nguyen:2015:ESP:2740908.2742141,
  author = {Nguyen, Phuong and Tomeo, Paolo and Di Noia, Tommaso and Di Sciascio, Eugenio},
  title = {An Evaluation of SimRank and Personalized PageRank to Build a Recommender System for the Web of Data},
@@ -58,4 +56,4 @@ or this one
  address = {New York, NY, USA},
  keywords = {personalized pagerank, recommender systems, simrank, web of data},
 } 
-
+```
