@@ -13,7 +13,7 @@ SimRank is an algorithm used to compute the similarity among nodes in a graph. T
 SimRank calculates similarities based on mutual relationships between graph nodes. Considering two nodes, the more similar nodes point to them, the more similar the two nodes are. We take an example in the figure below to illustrate how SimRank works in practice.
 
 <p align="center">
-<img src="https://github.com/phuongthanhnguyen/SimRank/blob/master/Data/SimRank.png" width="450">
+<img src="https://github.com/phuongthanhnguyen/SimRank/blob/master/Data/SimRank.png" width="550">
 </p>
 
 
