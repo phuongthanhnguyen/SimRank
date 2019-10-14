@@ -10,11 +10,17 @@ This repository contains the source code implementation of SimRank and a dataset
 SimRank is an algorithm used to compute the similarity among nodes in a graph. The original SimRank paper is in the following ([link](http://ilpubs.stanford.edu:8090/508/1/2001-41.pdf)).
 
 
-SimRank calculates similarities based on mutual relationships between graph nodes. Considering two nodes, the more similar nodes point to them, the more similar the two nodes are. We take an example in the figure below to illustrate how SimRank works in practice. There, node 1 is similar to node 2 since both are pointed by node 5. Comparably, node 3 is similar to node 4 as they are pointed by node 6. As a result, the two nodes \alpha and \beta are highly similar because they are concurrently pointed by other four nodes in the graph, i.e., 1, 2, 3, and 4, considering that 1 and 2 as well as 2 and 3 are pairwise similar. In this sense, the similarity between \alpha and \beta is computed by using a fixed-point function, taking into consideration the accumulative similarity by their pointing nodes. Given k >= 0 we have R^{(k)}(\alpha,\beta) = 1 with \alpha = \beta and R^{(k)}(\alpha,\beta) = 0 with k=0 and \alpha <> \beta:
-
+SimRank calculates similarities based on mutual relationships between graph nodes. Considering two nodes, the more similar nodes point to them, the more similar the two nodes are. We take an example in the figure below to illustrate how SimRank works in practice.
 
 <p align="center">
 <img src="https://github.com/phuongthanhnguyen/SimRank/blob/master/Data/SimRank.png" width="450">
+</p>
+
+
+There, node 1 is similar to node 2 since both are pointed by node 5. Comparably, node 3 is similar to node 4 as they are pointed by node 6. As a result, the two nodes \alpha and \beta are highly similar because they are concurrently pointed by other four nodes in the graph, i.e., 1, 2, 3, and 4, considering that 1 and 2 as well as 2 and 3 are pairwise similar. In this sense, the similarity between \alpha and \beta is computed by using a fixed-point function, taking into consideration the accumulative similarity by their pointing nodes. Given k >= 0 we have R^{(k)}(\alpha,\beta) = 1 with \alpha = \beta and R^{(k)}(\alpha,\beta) = 0 with k=0 and \alpha <> \beta:
+
+<p align="center">
+<img src="https://github.com/phuongthanhnguyen/SimRank/blob/master/Data/SimRankFormular.png" width="450">
 </p>
 
 We exploited sparse matrix to optimize the memory usage and thus increasing the computational performance. There is already an example embedded so that you can test the implementation. We represented a graph for GitHub repositories using various information as it can be seen in the following figure.
