@@ -29,6 +29,8 @@ This repository is organized as follows:
 	* [Graph.txt](./Data/Graph.txt): It stores the graph in the the form of node1#node2, where node1 is the id of the starting node and node2 is the id of the end node.
 	
 
+By executing the code, you are able to compute the similarity between any pair of nodes in the graph.
+
 ## How to cite
 If you find the tool useful for your work, please cite it using the following BibTex entries:
 
