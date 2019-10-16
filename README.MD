@@ -9,7 +9,7 @@ This repository contains the source code implementation of SimRank and a dataset
 
 This is a Java source code implementation of the following paper:
 
-** SimRank: A Measure of Structural-Context Similarity ** ([link](http://ilpubs.stanford.edu:8090/508/1/2001-41.pdf)).
+**SimRank: A Measure of Structural-Context Similarity** ([link](http://ilpubs.stanford.edu:8090/508/1/2001-41.pdf)).
 
 SimRank is an algorithm used to compute the similarity among nodes in a graph. SimRank calculates similarities based on mutual relationships between graph nodes. Considering two nodes, the more similar nodes point to them, the more similar the two nodes are. We take an example in the figure below to illustrate how SimRank works in practice.
 
